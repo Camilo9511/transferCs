@@ -23,6 +23,7 @@ if (!isset($_SESSION['usuario'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <link rel="stylesheet" href="css/styles.css">
+    
 </head>
 
 
@@ -74,11 +75,11 @@ if (!isset($_SESSION['usuario'])) {
                     </div>
                     <div class="campo">
                         <label>Obra que presta</label>
-                        <input class="inputs" type="text" name="obra_envia" placeholder="obra que presta o vende">
+                        <input class="inputs" type="number" name="obra_envia" placeholder="obra que presta o vende">
                     </div>
                     <div class="campo">
                         <label>Obra a la que se traslada</label>
-                        <input class="inputs" type="text" name="obra_recibe" placeholder="obra a la que se traslada">
+                        <input class="inputs" type="number" name="obra_recibe" placeholder="obra a la que se traslada">
                     </div>
                     <div class="textarea">
                         <label>Observaciones</label>

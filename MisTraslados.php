@@ -21,14 +21,14 @@ if ($conn->connect_error) {
 }
 
 // Obtener la obra asignada al usuario
-$sqlObra = "SELECT obra_asignada FROM obras WHERE usuario_id = ?";
+$sqlObra = "SELECT codigo_obra FROM obras WHERE usuario_id = ?";
 $stmt = $conn->prepare($sqlObra);
 $stmt->bind_param("i", $usuario_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
 if ($fila = $result->fetch_assoc()) {
-    $obra_usuario = $fila['obra_asignada'];
+    $obra_usuario = $fila['codigo_obra'];
 } else {
     $obra_usuario = null;
 }
@@ -39,15 +39,24 @@ if (!$obra_usuario) {
     exit();
 }
 
-// Obtener traslados que envió
-$sqlEnviados = "SELECT * FROM traslados WHERE obra_envia = ? AND estado = 'pendiente'";
+// Obtener traslados que recibio
+$sqlEnviados = "SELECT t.*, o.obra_asignada AS nombre_obra_recibe
+    FROM traslados t
+    JOIN obras o ON t.obra_recibe = o.codigo_obra
+    WHERE t.obra_envia = ? AND t.estado = 'pendiente'
+";
+
 $stmt = $conn->prepare($sqlEnviados);
 $stmt->bind_param("s", $obra_usuario);
 $stmt->execute();
 $enviados = $stmt->get_result();
 
-// Obtener traslados que recibió
-$sqlRecibidos = "SELECT * FROM traslados WHERE obra_recibe = ? AND estado = 'pendiente'";
+// Obtener traslados que enviò
+$sqlRecibidos = " SELECT t.*, o.obra_asignada AS nombre_obra_envia
+    FROM traslados t
+    JOIN obras o ON t.obra_envia = o.codigo_obra
+    WHERE t.obra_recibe = ? AND t.estado = 'pendiente'
+";
 $stmt = $conn->prepare($sqlRecibidos);
 $stmt->bind_param("s", $obra_usuario);
 $stmt->execute();
@@ -104,7 +113,9 @@ $recibidos = $stmt->get_result();
                     <th>Cantidad</th>
                     <th>Tipo</th>
                     <th>Obra Recibe</th>
+                    <th>Nombre Obra Recibe</th>
                     <th>Observaciones</th>
+                    <th>Estado</th>
                 </tr>
                 <?php while ($fila = $enviados->fetch_assoc()): ?>
                 <tr>
@@ -113,6 +124,7 @@ $recibidos = $stmt->get_result();
                     <td><?= htmlspecialchars($fila['cantidad']) ?></td>
                     <td><?= htmlspecialchars($fila['tipo']) ?></td>
                     <td><?= htmlspecialchars($fila['obra_recibe']) ?></td>
+                    <td><?= htmlspecialchars($fila['nombre_obra_recibe']) ?></td>
                     <td><?= htmlspecialchars($fila['observaciones']) ?></td>
                     <td>
                         <form action="marcar_facturado.php" method="POST" onsubmit="return confirm('¿Estás seguro de marcar este traslado como cobrado?');">
@@ -134,6 +146,7 @@ $recibidos = $stmt->get_result();
                     <th>Cantidad</th>
                     <th>Tipo</th>
                     <th>Obra Envía</th>
+                    <th>Nombre Obra Envía</th>
                     <th>Observaciones</th>
                 </tr>
                 <?php while ($fila = $recibidos->fetch_assoc()): ?>
@@ -143,6 +156,7 @@ $recibidos = $stmt->get_result();
                     <td><?= htmlspecialchars($fila['cantidad']) ?></td>
                     <td><?= htmlspecialchars($fila['tipo']) ?></td>
                     <td><?= htmlspecialchars($fila['obra_envia']) ?></td>
+                    <td><?= htmlspecialchars($fila['nombre_obra_envia']) ?></td>
                     <td><?= htmlspecialchars($fila['observaciones']) ?></td>
                 </tr>
                 <?php endwhile; ?>

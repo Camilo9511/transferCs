@@ -1,135 +1,106 @@
-document.addEventListener("DOMContentLoaded", function () {
-    // ACTIVAR ENLACE ACTUAL
-    const enlaces = document.querySelectorAll(".navegacion__enlace");
-    const paginaActual = window.location.pathname.split("/").pop().toLowerCase();
+console.log('🚀 app.js cargado');
+console.log('formulario detectado al inicio?', document.querySelector('.formulario'));
 
-    enlaces.forEach(enlace => {
-        let href = enlace.getAttribute("href");
-        if (!href || href === "#") return;
-        href = href.toLowerCase().split("/").pop();
-        if (href === paginaActual) {
-            enlace.classList.add("activo");
-        }
+
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('formulario existe?', document.querySelector('.formulario'));
+});
+
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  // ACTIVAR ENLACE ACTUAL
+  const enlaces = document.querySelectorAll(".navegacion__enlace");
+  const paginaActual = window.location.pathname.split("/").pop().toLowerCase();
+  enlaces.forEach(enlace => {
+    const href = enlace.getAttribute("href")?.split("/").pop().toLowerCase();
+    if (href === paginaActual) enlace.classList.add("activo");
+  });
+
+  // IMAGEN GRANDE AL CLIC
+  document.querySelectorAll(".imagenes").forEach(img => {
+    img.addEventListener("click", () => {
+      const overlay = document.createElement("div");
+      overlay.classList.add("overlay");
+      const imagenGrande = document.createElement("img");
+      imagenGrande.classList.add("imagen-grande");
+      imagenGrande.src = img.src;
+      overlay.appendChild(imagenGrande);
+      document.body.appendChild(overlay);
+      overlay.addEventListener("click", () => overlay.remove());
     });
+  });
 
-    // IMAGEN GRANDE AL CLIC
-    const imagenes = document.querySelectorAll(".imagenes");
-    const overlay = document.createElement("div");
-    overlay.classList.add("overlay");
-    document.body.appendChild(overlay);
+  // VALIDACIÓN DE FORMULARIO
+  const formulario = document.querySelector('.formulario');
+  const modal = document.getElementById('modal');
+  const cerrarModal = document.getElementById('cerrar-modal');
 
-    const imagenGrande = document.createElement("img");
-    imagenGrande.classList.add("imagen-grande");
-    overlay.appendChild(imagenGrande);
+  if (formulario) {
+    formulario.addEventListener('submit', event => {
+      event.preventDefault();
+      document.querySelectorAll('.mensaje-error').forEach(el => el.remove());
 
-    imagenes.forEach(img => {
-        img.addEventListener("click", () => {
-            imagenGrande.src = img.src;
-            overlay.classList.add("activo");
-        });
+      const valores = ['codigo','insumo','cantidad','tipo','obra_envia','obra_recibe']
+        .reduce((acc, name) => {
+          acc[name] = document.getElementsByName(name)[0]?.value.trim() || '';
+          return acc;
+        }, {});
+      const codigosValidos = ['404051','404052','404053','404054','404055','404056'];
+
+      let errores = false;
+      if (valores.codigo.length !== 5) { mostrarError('codigo','Código debe tener 5 dígitos'); errores = true; }
+      if (!valores.insumo) { mostrarError('insumo','Ingresa nombre insumo'); errores = true; }
+      if (!valores.cantidad) { mostrarError('cantidad','Ingresa cantidad'); errores = true; }
+      if (!valores.tipo) { mostrarError('tipo','Selecciona tipo'); errores = true; }
+      if (!valores.obra_envia) { mostrarError('obra_envia','Ingresa obra que envía'); errores = true; }
+      if (!valores.obra_recibe) {
+        mostrarError('obra_recibe','Ingresa obra que recibe'); errores = true;
+      } else if (!codigosValidos.includes(valores.obra_recibe)) {
+        alert(`La obra ${valores.obra_recibe} no existe: ` );
+        errores = true;
+      }
+
+      if (errores) return;
+
+      if (modal) {
+        modal.style.display = 'flex';
+        setTimeout(() => formulario.submit(), 1000);
+      } else {
+        formulario.submit();
+      }
     });
+  }
 
-    overlay.addEventListener("click", () => {
-        overlay.classList.remove("activo");
+  // Cierre del modal
+  if (cerrarModal && modal) {
+    cerrarModal.addEventListener('click', () => {
+      modal.style.display = 'none';
+      formulario.reset();
+      document.querySelectorAll('.mensaje-error').forEach(el => el.remove());
     });
+  }
 
-    // VALIDACIÓN DE FORMULARIO
-    const formulario = document.querySelector(".formulario");
-    const modal = document.getElementById("modal");
-    const cerrarModal = document.getElementById("cerrar-modal");
+  // Limpieza de errores al modificar campos
+  ['codigo','insumo','cantidad','tipo','obra_envia','obra_recibe'].forEach(name => {
+    const input = document.getElementsByName(name)[0];
+    if (!input) return;
+    ['input','change'].forEach(evt =>
+      input.addEventListener(evt, () => {
+        const err = input.parentNode.querySelector('.mensaje-error');
+        if (err) { err.remove(); }
+      })
+    );
+  });
 
-    formulario.addEventListener("submit", function(event) {
-        event.preventDefault();
-
-        // Limpiar mensajes de error previos
-        const mensajesError = document.querySelectorAll(".mensaje-error");
-        mensajesError.forEach(msg => msg.remove());
-
-        let codigo = document.getElementsByName("codigo")[0].value;
-        let insumo = document.getElementsByName("insumo")[0].value;
-        let cantidad = document.getElementsByName("cantidad")[0].value;
-        let tipo = document.getElementsByName("tipo")[0].value;
-        let obra_envia = document.getElementsByName("obra_envia")[0].value;
-        let obra_recibe = document.getElementsByName("obra_recibe")[0].value;
-
-        let errores = false;
-
-        // Validaciones
-        if (codigo.length !== 5) {
-            mostrarError("codigo", "Por favor ingrese un código de 5 dígitos");
-            errores = true;
-        }
-
-        if (insumo.trim() === "") {
-            mostrarError("insumo", "Por favor ingresa el nombre del insumo");
-            errores = true;
-        }
-
-        if (cantidad.trim() === "") {
-            mostrarError("cantidad", "Por favor ingresa la cantidad del insumo");
-            errores = true;
-        }
-
-        if (tipo.trim() === "") {
-            mostrarError("tipo", "Por favor selecciona el tipo de traslado");
-            errores = true;
-        }
-
-        if (obra_envia.trim() === "") {
-            mostrarError("obra_envia", "Por favor ingresa la obra que envía");
-            errores = true;
-        }
-
-        if (obra_recibe.trim() === "") {
-            mostrarError("obra_recibe", "Por favor ingresa la obra que recibe");
-            errores = true;
-        }
-
-        if (errores) return;
-
-        modal.style.display = "flex";
-
-        setTimeout(() => {
-            formulario.submit();
-        }, 1000);
-    });
-
-    // Mostrar mensaje de error debajo del campo
-    function mostrarError(campo, mensaje) {
-        const input = document.getElementsByName(campo)[0];
-
-        if (!input.nextElementSibling || !input.nextElementSibling.classList.contains("mensaje-error")) {
-            const mensajeError = document.createElement("div");
-            mensajeError.classList.add("mensaje-error");
-            mensajeError.textContent = mensaje;
-            input.classList.add("input-error");
-            input.parentNode.appendChild(mensajeError);
-        }
-    }
-
-    // Eliminar errores automáticamente cuando el usuario escribe o cambia
-    ["codigo", "insumo", "cantidad", "tipo", "obra_envia", "obra_recibe"].forEach(nombre => {
-        const input = document.getElementsByName(nombre)[0];
-
-        input.addEventListener("input", () => {
-            const error = input.parentNode.querySelector(".mensaje-error");
-            if (error) {
-                error.remove();
-                input.classList.remove("input-error");
-            }
-        });
-
-        input.addEventListener("change", () => {
-            const error = input.parentNode.querySelector(".mensaje-error");
-            if (error) {
-                error.remove();
-                input.classList.remove("input-error");
-            }
-        });
-    });
-
-    cerrarModal.addEventListener("click", function () {
-        modal.style.display = "none";
-        formulario.reset();
-    });
+  // Función para mostrar errores
+  function mostrarError(name, msg) {
+    const input = document.getElementsByName(name)[0];
+    if (!input) return;
+    const div = document.createElement('div');
+    div.classList.add('mensaje-error');
+    div.textContent = msg;
+    input.parentNode.appendChild(div);
+  }
 });

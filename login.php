@@ -21,7 +21,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: index.php");
         exit();
     } else {
-        echo "Credenciales incorrectas";
+        echo "<script>
+            alert('Credenciales incorrectas');
+            window.location.href = 'login.php';
+          </script>";
     }
     
 }

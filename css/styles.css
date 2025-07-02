@@ -546,7 +546,6 @@ input + .mensaje-error, select + .mensaje-error {
  }
 }  
 .contenedor.traslados{
-    border: 2px solid red;
     display: grid;
     grid-template-rows: repeat(2, 1fr);
     gap: 2rem;

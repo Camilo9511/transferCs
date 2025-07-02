@@ -19,8 +19,10 @@ if ($conn->connect_error) {
 
 if (
     isset($_POST['insumo'], $_POST['codigo'], $_POST['cantidad'], $_POST['tipo'],
-          $_POST['obra_envia'], $_POST['obra_recibe'], $_POST['observaciones'])
-) {
+          $_POST['obra_envia'], $_POST['obra_recibe'], $_POST['observaciones'])) 
+          
+   
+
     $insumo = $_POST['insumo'];
     $codigo = $_POST['codigo'];
     $cantidad = $_POST['cantidad'];
@@ -28,9 +30,10 @@ if (
     $obra_envia = $_POST['obra_envia'];
     $obra_recibe = $_POST['obra_recibe'];
     $observaciones = $_POST['observaciones'];
+   
 
     $stmt = $conn->prepare("INSERT INTO traslados (insumo, codigo, cantidad, tipo, obra_envia, obra_recibe, observaciones)
-                            VALUES (?, ?, ?, ?, ?, ?, ?)");
+                            VALUES (?, ?, ?, ?, ?, ?, ? )");
     $stmt->bind_param("ssissss", $insumo, $codigo, $cantidad, $tipo, $obra_envia, $obra_recibe, $observaciones);
 
     if ($stmt->execute()) {
@@ -41,9 +44,6 @@ if (
     }
 
     $stmt->close();
-} else {
-    echo "Faltan datos del formulario.";
-}
 
 $conn->close();
 ?>
