@@ -19,18 +19,30 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // IMAGEN GRANDE AL CLIC
-  document.querySelectorAll(".imagenes").forEach(img => {
-    img.addEventListener("click", () => {
-      const overlay = document.createElement("div");
-      overlay.classList.add("overlay");
-      const imagenGrande = document.createElement("img");
-      imagenGrande.classList.add("imagen-grande");
+ // ...existing code...
+// IMAGEN GRANDE AL CLIC
+document.querySelectorAll("img.imagenes").forEach(img => {
+  img.addEventListener("click", () => {
+    const lightbox = document.getElementById("lightbox");
+    const imagenGrande = document.getElementById("imagen-grande");
+    if (lightbox && imagenGrande) {
       imagenGrande.src = img.src;
-      overlay.appendChild(imagenGrande);
-      document.body.appendChild(overlay);
-      overlay.addEventListener("click", () => overlay.remove());
-    });
+      lightbox.style.display = "flex";
+    }
   });
+});
+
+// Cerrar lightbox al hacer clic fuera de la imagen
+const lightbox = document.getElementById("lightbox");
+if (lightbox) {
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) {
+      lightbox.style.display = "none";
+      document.getElementById("imagen-grande").src = "";
+    }
+  });
+}
+// ...existing code...
 
   // VALIDACIÓN DE FORMULARIO
   const formulario = document.querySelector('.formulario');

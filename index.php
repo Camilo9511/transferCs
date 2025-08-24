@@ -62,7 +62,7 @@ if (!isset($_SESSION['usuario'])) {
             <img class="imagenes" src="img/img6.jpg" alt="imagen 6">
         </div>
         <div id="lightbox" class="lightbox">
-            <img id="imagen-grande" src="" alt="Imagen en grande">
+            <img id="imagen-grande" src="" alt="">
         </div>
     </main>
     <footer class="footer">

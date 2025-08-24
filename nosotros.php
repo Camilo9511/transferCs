@@ -51,13 +51,11 @@ if (!isset($_SESSION['usuario'])) {
 
         <h2>Nosotros</h2>
         <div class="contenedor__nosotros">
-           <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Qui repudiandae, in nihil ipsam incidunt
-             officiis voluptatem similique voluptate placeat vel sunt cumque facere culpa tenetur earum perspiciatis, 
-             suscipit sit ducimus? Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde modi a omnis facilis 
-             labore nisi nemo cupiditate, molestias praesentium 
-             quisquam recusandae temporibus perferendis nostrum necessitatibus! Velit placeat nobis architecto 
-             reprehenderit? Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, eos placeat, quia quasi nesciunt
-              cum molestias id, architecto ad explicabo aut laudantium vero. Tenetur dolorum optio eos in, error harum.</p>
+           <p>Nuestra aplicacion lleva mas de dos años ayudando a muchas empresas constructoras, las cuales requieren 
+            llevar un control de los traslados internos que realizan en los diferentes proyectos ejecutados. Esta aplicacion
+            permite llevar una informacipon clara y detallada de los traslados realizados. La aplicacion cuenta con la opción
+            de registar los usuarios que estarán a cargo de dichos procesos, facilitando el buen manejo de la informacion entre
+            los almacenes de las obras ejecutadas.</p>
         </div>
     </main>
     <footer class="footer">
