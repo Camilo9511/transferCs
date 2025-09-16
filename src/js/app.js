@@ -18,8 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (href === paginaActual) enlace.classList.add("activo");
   });
 
-  // IMAGEN GRANDE AL CLIC
- // ...existing code...
+  
 // IMAGEN GRANDE AL CLIC
 document.querySelectorAll("img.imagenes").forEach(img => {
   img.addEventListener("click", () => {
@@ -42,7 +41,7 @@ if (lightbox) {
     }
   });
 }
-// ...existing code...
+
 
   // VALIDACIÓN DE FORMULARIO
   const formulario = document.querySelector('.formulario');

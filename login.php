@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'config.php'; // Asegúrate que la ruta esté bien (ajusta si está en otra carpeta)
+require 'config.php'; 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuario = $_POST['usuario'];

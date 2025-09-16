@@ -1,9 +1,9 @@
 <?php
 // Conexión con la base de datos
 $servername = "localhost";
-$username = "root";  // Usuario de MySQL
-$password = "root";  // Contraseña de MySQL
-$dbname = "traslados_obras"; // Nombre de la base de datos
+$username = "root";  
+$password = "root";  
+$dbname = "traslados_obras"; 
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -14,9 +14,9 @@ if ($conn->connect_error) {
 
 // Datos del usuario
 $usuario = "camilo";
-$contraseña = "1234";  // La contraseña que deseas guardar
+$contraseña = "1234";  
 
-// Hashear la contraseña
+
 $contraseña_hash = password_hash($contraseña, PASSWORD_DEFAULT);
 
 // Insertar el nuevo usuario en la base de datos

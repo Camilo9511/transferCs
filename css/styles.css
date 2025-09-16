@@ -566,14 +566,3 @@ input + .mensaje-error, select + .mensaje-error {
 }
 
 
-table {
-  display: block;
-  overflow-x: auto;
-  white-space: nowrap;
-  width: 51rem;
-}
-
-table tbody {
-  display: table;
-  width: 100%;
-}
